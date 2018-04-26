@@ -22,5 +22,7 @@ app.post('/todos', (req, res) => {
 });
 
 app.listen(3500, () => {
-  console.log('Localhost started to run localhost:3500')
+  console.log('Localhost started to run port:3500')
 });
+
+module.exports = {app};
