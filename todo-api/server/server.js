@@ -15,11 +15,19 @@ app.post('/todos', (req, res) => {
   })
 
   todo.save().then((doc)=>{
-    return res.send(doc);
+   res.send(doc);
   }, (err)=>{
-    return res.status(400).send(err);
+   res.status(400).send(err);
   })
 });
+
+app.get('/todos', (req, res) => (
+  Todo.find().then((todos) => {
+    res.send({todos});
+  },(e) => {
+    res.status(400).send(e);
+  })
+));
 
 app.listen(3500, () => {
   console.log('Localhost started to run port:3500')
