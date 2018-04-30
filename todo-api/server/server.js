@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { ObjectID } = require('mongodb');
 
 const { Mongoose } = require('./db/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+
+const port = process.env.PORT || 3500;
 
 let app = express();
 
@@ -21,16 +24,34 @@ app.post('/todos', (req, res) => {
   })
 });
 
-app.get('/todos', (req, res) => (
-  Todo.find().then((todos) => {
-    res.send({todos});
+app.get('/todos', (req, res) => {
+  Todo.find().then((todo) => {
+    res.send({todo});
   }, (e) => {
     res.status(400).send(e);
   })
-));
+});
 
-app.listen(3500, () => {
-  console.log('Localhost started to run port:3500')
+app.get('/todos/:id', (req, res) => {
+  let id = req.params.id;
+
+  if(!ObjectID.isValid(id)) {
+    return res.status(404).send()
+  }
+
+  Todo.findById(id).then((todo) => {
+    if(!todo){
+      return res.status(404).send();
+    }
+
+    res.send({todo});
+  }).catch((err) => {
+    res.status(400).send();
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Localhost started to run port:${port}`)
 });
 
 module.exports = {app};
