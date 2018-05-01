@@ -1,6 +1,6 @@
-const Mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-Mongoose.Promise = global.Promise;
-Mongoose.connect(process.env.MONGODB_URI);
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI);
 
-module.exports = { Mongoose };
+module.exports = { mongoose };
